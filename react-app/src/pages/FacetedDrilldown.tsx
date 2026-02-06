@@ -6,16 +6,18 @@ import {
 } from "react-instantsearch";
 import { SearchLayout } from "../components/Layout";
 import { SearchHit } from "../components/SearchHit";
-import { HIERARCHICAL_ATTRIBUTES } from "../algolia";
+import { defaultSearchConfig, type SearchConfig } from "../algolia";
 
-export function FacetedDrilldown() {
+export function FacetedDrilldown({ config }: { config?: SearchConfig }) {
+  const { hierarchicalAttributes } = config ?? defaultSearchConfig;
+
   return (
-    <SearchLayout>
+    <SearchLayout config={config}>
       <div className="two-column">
         <aside className="sidebar">
           <h2>Categories</h2>
           <HierarchicalMenu
-            attributes={HIERARCHICAL_ATTRIBUTES}
+            attributes={hierarchicalAttributes}
             classNames={{
               root: "hierarchical-menu",
               list: "hierarchical-menu-list",

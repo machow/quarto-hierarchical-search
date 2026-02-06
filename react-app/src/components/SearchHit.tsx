@@ -15,6 +15,16 @@ type QuartoHit = AlgoliaHit<{
   };
 }>;
 
+const ALLOWED_SCHEMES = /^https?:\/\//;
+const ALLOWED_RELATIVE = /^[a-zA-Z0-9]/;
+
+function sanitizeHref(href: string): string | undefined {
+  if (ALLOWED_SCHEMES.test(href) || ALLOWED_RELATIVE.test(href)) {
+    return href;
+  }
+  return undefined;
+}
+
 export function SearchHit({ hit }: { hit: QuartoHit }) {
   const crumbs = hit.crumbs;
   const breadcrumb = crumbs
@@ -24,9 +34,11 @@ export function SearchHit({ hit }: { hit: QuartoHit }) {
         .join(" › ")
     : null;
 
+  const href = sanitizeHref(hit.href);
+
   return (
     <article className="search-hit">
-      <a href={hit.href} className="hit-link">
+      <a href={href} className="hit-link">
         <h3 className="hit-title">
           <Highlight attribute="title" hit={hit} />
         </h3>

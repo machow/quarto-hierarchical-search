@@ -1,10 +1,17 @@
 import { InstantSearch, SearchBox } from "react-instantsearch";
-import { searchClient, INDEX_NAME } from "../algolia";
+import { defaultSearchConfig, type SearchConfig } from "../algolia";
 import type { ReactNode } from "react";
 
-export function SearchLayout({ children }: { children: ReactNode }) {
+type SearchLayoutProps = {
+  children: ReactNode;
+  config?: SearchConfig;
+};
+
+export function SearchLayout({ children, config }: SearchLayoutProps) {
+  const { searchClient, indexName } = config ?? defaultSearchConfig;
+
   return (
-    <InstantSearch searchClient={searchClient} indexName={INDEX_NAME}>
+    <InstantSearch searchClient={searchClient} indexName={indexName}>
       <div className="search-panel">
         <SearchBox
           placeholder="Search Quarto docs..."

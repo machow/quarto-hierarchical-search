@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Hits,
   Pagination,
@@ -8,7 +8,7 @@ import {
 import type { UseHierarchicalMenuProps } from "react-instantsearch";
 import { SearchLayout } from "../components/Layout";
 import { SearchHit } from "../components/SearchHit";
-import { HIERARCHICAL_ATTRIBUTES } from "../algolia";
+import { defaultSearchConfig, type SearchConfig } from "../algolia";
 
 type HierarchicalItem = {
   value: string;
@@ -17,6 +17,11 @@ type HierarchicalItem = {
   isRefined: boolean;
   data: HierarchicalItem[] | null;
 };
+
+function isAnyRefined(item: HierarchicalItem): boolean {
+  if (item.isRefined) return true;
+  return item.data?.some(isAnyRefined) ?? false;
+}
 
 function TreeNode({
   item,
@@ -27,8 +32,17 @@ function TreeNode({
   onRefine: (value: string) => void;
   depth?: number;
 }) {
-  const [expanded, setExpanded] = useState(item.isRefined || depth === 0);
+  const hasRefinedDescendant = isAnyRefined(item);
+  const [expanded, setExpanded] = useState(
+    hasRefinedDescendant || depth === 0
+  );
   const hasChildren = item.data && item.data.length > 0;
+
+  useEffect(() => {
+    if (hasRefinedDescendant) {
+      setExpanded(true);
+    }
+  }, [hasRefinedDescendant]);
 
   return (
     <li className="tree-node" style={{ paddingLeft: depth > 0 ? 16 : 0 }}>
@@ -67,9 +81,13 @@ function TreeNode({
   );
 }
 
-function TreeNavSidebar() {
+function TreeNavSidebar({
+  hierarchicalAttributes,
+}: {
+  hierarchicalAttributes: string[];
+}) {
   const { items, refine } = useHierarchicalMenu({
-    attributes: HIERARCHICAL_ATTRIBUTES,
+    attributes: hierarchicalAttributes,
   } as UseHierarchicalMenuProps);
 
   return (
@@ -92,11 +110,13 @@ function TreeNavSidebar() {
   );
 }
 
-export function TreeNav() {
+export function TreeNav({ config }: { config?: SearchConfig }) {
+  const { hierarchicalAttributes } = config ?? defaultSearchConfig;
+
   return (
-    <SearchLayout>
+    <SearchLayout config={config}>
       <div className="two-column">
-        <TreeNavSidebar />
+        <TreeNavSidebar hierarchicalAttributes={hierarchicalAttributes} />
         <div className="results-panel">
           <Stats
             classNames={{ root: "stats" }}
