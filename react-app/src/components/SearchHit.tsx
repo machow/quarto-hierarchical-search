@@ -15,14 +15,16 @@ type QuartoHit = AlgoliaHit<{
   };
 }>;
 
-const ALLOWED_SCHEMES = /^https?:\/\//;
-const ALLOWED_RELATIVE = /^[a-zA-Z0-9]/;
-
 function sanitizeHref(href: string): string | undefined {
-  if (ALLOWED_SCHEMES.test(href) || ALLOWED_RELATIVE.test(href)) {
-    return href;
+  try {
+    const url = new URL(href, window.location.origin);
+    if (url.protocol === "http:" || url.protocol === "https:") {
+      return href;
+    }
+    return undefined;
+  } catch {
+    return undefined;
   }
-  return undefined;
 }
 
 export function SearchHit({ hit }: { hit: QuartoHit }) {

@@ -38,6 +38,34 @@ body {
   white-space: nowrap;
 }
 
+.index-toggle {
+  display: flex;
+  background: #ffffff15;
+  border-radius: 6px;
+  padding: 2px;
+}
+
+.index-btn {
+  background: none;
+  border: none;
+  color: #ffffffaa;
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.index-btn:hover {
+  color: #fff;
+}
+
+.index-btn--active {
+  background: #4a6cf7;
+  color: #fff;
+  font-weight: 600;
+}
+
 .nav-links {
   display: flex;
   gap: 4px;
