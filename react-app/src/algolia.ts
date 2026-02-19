@@ -7,7 +7,7 @@ export const searchClient = algoliasearch(
 );
 
 export const INDEX_NAME =
-  import.meta.env.VITE_ALGOLIA_INDEX || "quarto_prototype";
+  import.meta.env.VITE_ALGOLIA_INDEX || "shiny-prototype-dev-prepended";
 
 export const HIERARCHICAL_ATTRIBUTES = [
   "crumbs.lvl0",
