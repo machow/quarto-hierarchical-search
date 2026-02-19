@@ -2,6 +2,23 @@
 
 Demo app for evaluating hierarchical search UX patterns against Algolia-powered Quarto documentation indices.
 
+## Updating search index
+
+The code below merges the indexes listed in `merge_data.yml`, transforms their
+crumbs to match what algolia prefers, and then uploads to algolia.
+
+```bash
+uv run _upload_index/0-merge-index.py
+uv run _upload_index/1-transform-crumbs.py
+uv run _upload_index/2-upload-index.py
+```
+
+To specify the index to upload to, use
+
+```bash
+ALGOLIA_INDEX=name_of_index uv run _upload_index/2-upload-index.py
+```
+
 ## Structure
 
 - **`react-app/`** — React + TypeScript demo with two search UX approaches (faceted drill-down and tree nav)
