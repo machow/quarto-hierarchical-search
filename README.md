@@ -7,6 +7,16 @@ Demo app for evaluating hierarchical search UX patterns against Algolia-powered 
 The code below merges the indexes listed in `merge_data.yml`, transforms their
 crumbs to match what algolia prefers, and then uploads to algolia.
 
+To use it, first create a .env file with
+
+```bash
+ALGOLIA_APP_ID=...
+ALGOLIA_API_KEY_WRITE=...
+```
+
+Here is the code to upload:
+
+
 ```bash
 uv run _upload_index/0-merge-index.py
 uv run _upload_index/1-transform-crumbs.py
