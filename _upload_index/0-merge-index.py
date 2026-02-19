@@ -57,13 +57,19 @@ def shorten_text(text: str, max_length: int) -> str:
 merged_search_items = []
 
 all_urls = fetch_url_data()
+print(f"Fetching search.json from {len(all_urls)} sites...")
 for name, url in all_urls:
     url = url.removesuffix("/")
     r = requests.get(f"{url}/search.json")
     r.raise_for_status()
     search_items = r.json()
+    print(f"  {name}: {len(search_items)} items")
     merged_search_items.extend(make_absolute(search_items, url, name))
+
+print(f"Total: {len(merged_search_items)} items")
 
 # %%
 with open("./search.json", "w") as f:
     json.dump(merged_search_items, f)
+
+print("Wrote ./search.json")
