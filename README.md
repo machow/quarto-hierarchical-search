@@ -5,8 +5,6 @@ Demo app for evaluating hierarchical search UX patterns against Algolia-powered 
 ## Structure
 
 - **`react-app/`** — React + TypeScript demo with two search UX approaches (faceted drill-down and tree nav)
-- **`analyses/`** — Exploratory notebooks and data from early prototyping
-- **`app-shiny/`** — Earlier Shiny for Python prototype
 
 See [`react-app/README.md`](react-app/README.md) for setup and usage.
 
